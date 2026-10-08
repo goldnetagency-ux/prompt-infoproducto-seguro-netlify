@@ -35,7 +35,7 @@ test('_redirects: cada ruta protegida tiene regla Role y fallback al login', () 
   for (const [route, role] of routes) {
     const rules = lines.filter((l) => l.trim().split(/\s+/)[0] === route);
     assert.ok(rules.some((l) => l.includes(`Role=${role}`) && /\s200!/.test(l)), `falta Role=${role} para ${route}`);
-    assert.ok(rules.some((l) => /\/login\.html\s+302/.test(l)), `falta fallback para ${route}`);
+    assert.ok(rules.some((l) => /\/login\.html\s+302!(\s|$)/.test(l)), `falta fallback para ${route}`);
   }
 });
 

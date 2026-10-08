@@ -2,16 +2,16 @@
 # `buyer` = cualquier compradora (Catálogo o Combo). `combo` = solo Combo Premium.
 
 /portal.html        /portal.html                  200!  Role=buyer
-/portal.html        /login.html                   302
+/portal.html        /login.html                   302!
 /portal             /portal.html                  200!  Role=buyer
-/portal             /login.html                   302
+/portal             /login.html                   302!
 /portal/            /portal.html                  200!  Role=buyer
-/portal/            /login.html                   302
+/portal/            /login.html                   302!
 
 # Descargas del nivel Catálogo
 /portal-assets/*    /portal-assets/:splat         200!  Role=buyer
-/portal-assets/*    /login.html                   302
+/portal-assets/*    /login.html                   302!
 
 # Contenido del Combo (tutorial, soporte, bonos, PDF del Combo)
 /portal-combo/*     /portal-combo/:splat          200!  Role=combo
-/portal-combo/*     /login.html                   302
+/portal-combo/*     /login.html                   302!
