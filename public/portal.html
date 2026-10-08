@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tu portal · Soy Maru</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="portal-nav">
+    <div class="wrap">
+      <a class="brand" href="/portal" style="font-size:1.25rem">Soy Maru</a>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span id="who" style="font-size:.85rem;color:var(--texto-suave)" class="hidden"></span>
+        <button id="logout" class="btn btn-ghost" type="button" style="min-height:40px;padding:6px 16px;font-size:.88rem">Cerrar sesión</button>
+      </div>
+    </div>
+    <nav class="chips" aria-label="Secciones">
+      <a href="#empeza">Empezá por acá</a>
+      <a href="#plantillas">Plantillas</a>
+      <a href="#tutorial">Tutorial</a>
+      <a href="#soporte">Soporte</a>
+    </nav>
+  </div>
+
+  <header class="welcome">
+    <div class="wrap narrow center">
+      <span class="tag" id="plan-tag">Tu portal</span>
+      <h1 style="margin-top:14px">¡Bienvenida<span id="name"></span>!</h1>
+      <p class="lead">Soy Maru. Gracias por confiar en mí 🤍 Acá tenés todo ordenado para que tu catálogo quede listo y empieces a mostrar tu trabajo como se merece.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="portal-section" id="empeza">
+      <div class="wrap narrow">
+        <span class="eyebrow">Empezá por acá</span>
+        <h2>Tu catálogo en 3 pasos</h2>
+        <ol class="steps">
+          <li><strong>Abrí la plantilla.</strong> Tocá «Abrir en Canva» en la sección de abajo.</li>
+          <li><strong>Iniciá sesión en Canva</strong> (es gratis) y tocá «Usar plantilla».</li>
+          <li><strong>Cambiá tu nombre, logo, fotos y precios.</strong> ¡Listo!</li>
+        </ol>
+        <div class="msg info" style="margin-top:20px"><strong>¿Cómo se lo mando a mis clientas?</strong><br>En Canva tocá Compartir → Descargar. Elegí <strong>PDF</strong> para mandarlo por WhatsApp o <strong>PNG</strong> para subirlo a tus historias.</div>
+      </div>
+    </section>
+
+    <section class="portal-section" id="plantillas" style="background:var(--crema-2)">
+      <div class="wrap">
+        <span class="eyebrow">Tu plantilla</span>
+        <h2>Plantillas</h2>
+        <div class="grid grid-2" id="plantillas-grid">
+          <article class="card tpl">
+            <div class="thumb"><img src="/img/prev-catalogo.png" alt="Vista previa de la plantilla de catálogo de servicios" width="335" height="595" loading="lazy"></div>
+            <div class="body">
+              <span class="tag" style="align-self:flex-start">Catálogo Premium</span>
+              <h3 style="margin:6px 0 0">Catálogo de servicios y precios</h3>
+              <p>7 páginas con diseño de salón de alta gama. Cargás tus servicios, precios y fotos.</p>
+              <div class="btns">
+                <a class="btn btn-primary" href="https://canva.link/kcf46osuga9pjfo" target="_blank" rel="noopener">Abrir en Canva →</a>
+                <a class="btn btn-ghost" href="/portal-assets/Catalogo-Premium-Soy-Maru.pdf" download>Descargar guía en PDF</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Secciones del Combo: el contenido real se carga desde /portal-combo/ (protegido por rol).
+         Si la cuenta es nivel Catálogo, este bloqueo no tiene nada detrás. -->
+    <div id="combo-root">
+      <section class="portal-section" id="bonos">
+        <div class="wrap">
+          <span class="eyebrow">Solo Combo Premium</span>
+          <h2>Bonos exclusivos</h2>
+          <article class="card locked">
+            <div class="lock" aria-hidden="true">🔒</div>
+            <h3>Plantillas para Instagram y guía post-servicio</h3>
+            <p>Plantillas de feed e historias, guía de cuidados post-servicio, ideas de contenido y pack de stickers.</p>
+          </article>
+        </div>
+      </section>
+      <section class="portal-section" id="tutorial" style="background:var(--crema-2)">
+        <div class="wrap narrow">
+          <span class="eyebrow">Solo Combo Premium</span>
+          <h2>Tutorial</h2>
+          <article class="card locked">
+            <div class="lock" aria-hidden="true">🔒</div>
+            <h3>Video tutorial paso a paso</h3>
+            <p>Mirá cómo armar tu catálogo de principio a fin, en unos 5 minutos.</p>
+          </article>
+        </div>
+      </section>
+      <section class="portal-section" id="soporte">
+        <div class="wrap narrow">
+          <span class="eyebrow">Solo Combo Premium</span>
+          <h2>Soporte</h2>
+          <article class="card locked">
+            <div class="lock" aria-hidden="true">🔒</div>
+            <h3>Soporte por WhatsApp</h3>
+            <p>¿Te trabaste con algo? Escribinos y te ayudamos a dejar tu catálogo listo.</p>
+          </article>
+        </div>
+      </section>
+      <section class="portal-section" id="upgrade" style="padding-top:0">
+        <div class="wrap narrow">
+          <div class="guarantee">
+            <h3>Pasate al Combo Premium</h3>
+            <p>Sumá el video tutorial, el soporte por WhatsApp y los bonos por ARS 9.900.</p>
+            <a class="btn btn-primary" href="PEGA-AQUI-LINK-UPGRADE" data-placeholder-link>Quiero pasarme al Combo</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site"><div class="wrap"><p>Soy Maru · Catálogos Premium</p></div></footer>
+
+  <script src="/auth.js"></script>
+  <script src="/portal.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout DEMO · Soy Maru</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="page-center">
+  <div class="demo-banner"><strong>DEMO</strong> · Esta compra es una simulación. No se cobra nada.</div>
+  <header class="topbar"><div class="wrap"><a class="brand" href="/">Soy Maru<small>Catálogos Premium</small></a></div></header>
+
+  <main>
+    <div class="wrap narrow">
+      <div class="card">
+        <span class="eyebrow">Paso 1 de 2</span>
+        <h2>Tu compra</h2>
+        <p class="lead" style="font-size:1rem">Dejanos tu nombre y el correo de la cuenta de Google con la que vas a entrar al portal.</p>
+
+        <form id="form" novalidate>
+          <label for="name">Tu nombre</label>
+          <input id="name" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="Ej: Camila">
+
+          <label for="email">Correo de tu cuenta de Google</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder="tucorreo@gmail.com">
+
+          <label style="margin-bottom:0">Nivel</label>
+          <div class="plan-pick" role="radiogroup" aria-label="Nivel">
+            <label><input type="radio" name="plan" value="catalogo"><span><strong>Catálogo Premium · ARS 4.900</strong>Plantilla de catálogo + guía de uso</span></label>
+            <label><input type="radio" name="plan" value="combo" checked><span><strong>Combo Premium · ARS 9.900</strong>Todo lo del Catálogo + video tutorial + soporte por WhatsApp</span></label>
+          </div>
+
+          <div id="msg" class="msg hidden" role="status" aria-live="polite"></div>
+          <button id="submit" class="btn btn-primary btn-block" type="submit" style="margin-top:20px">Simular compra (DEMO)</button>
+          <p style="font-size:.85rem;color:var(--texto-suave);margin:14px 0 0;text-align:center">Garantía de 7 días. Muy pronto: pago con Mercado Pago.</p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // El parámetro ?plan= solo preselecciona la opción. El servidor define precio y nivel.
+    (function () {
+      var q = new URLSearchParams(location.search).get('plan');
+      if (q === 'catalogo' || q === 'combo') {
+        var el = document.querySelector('input[name=plan][value=' + q + ']');
+        if (el) el.checked = true;
+      }
+      var form = document.getElementById('form');
+      var msg = document.getElementById('msg');
+      var btn = document.getElementById('submit');
+      var errors = {
+        invalid_email: 'Revisá el correo: no parece válido.',
+        invalid_name: 'Contanos tu nombre.',
+        invalid_plan: 'Elegí un nivel.',
+        persist_failed: 'No pudimos registrar tu compra. Probá de nuevo en un momento.'
+      };
+      function show(kind, text) { msg.className = 'msg ' + kind; msg.textContent = text; }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var data = {
+          name: form.name.value.trim(),
+          email: form.email.value.trim(),
+          plan: form.plan.value
+        };
+        if (!data.name) return show('error', errors.invalid_name);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return show('error', errors.invalid_email);
+        btn.disabled = true;
+        btn.textContent = 'Registrando…';
+        show('info', 'Registrando tu compra…');
+        try {
+          var res = await fetch('/.netlify/functions/register-demo-purchase', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          var out = await res.json().catch(function () { return {}; });
+          if (!res.ok || !out.ok) {
+            show('error', errors[out.error] || 'Algo salió mal. Probá de nuevo.');
+            btn.disabled = false; btn.textContent = 'Simular compra (DEMO)';
+            return;
+          }
+          // Solo para explicar una cuenta equivocada. No concede acceso.
+          try { sessionStorage.setItem('maru_email_hint', data.email.toLowerCase()); } catch (_) {}
+          show('ok', '¡Listo! Tu compra DEMO quedó registrada. Ahora entrá con Google…');
+          setTimeout(function () { location.href = '/login.html'; }, 1200);
+        } catch (_) {
+          show('error', 'No pudimos conectar. Revisá tu internet y probá de nuevo.');
+          btn.disabled = false; btn.textContent = 'Simular compra (DEMO)';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

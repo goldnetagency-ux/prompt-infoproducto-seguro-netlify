@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.netlify/
+.env
+.env.*
+
+# Contenido pago y material privado: el repo es PUBLICO, esto NO se sube.
+# Se publica con `netlify deploy` desde esta carpeta (ver docs/CONFIGURACION_NETLIFY.md).
+public/portal-combo/
+public/portal-assets/
+public/img/
+*.pdf
+*.jpeg
+whatsapp_chat*.png

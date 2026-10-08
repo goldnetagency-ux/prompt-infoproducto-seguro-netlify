@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar · Soy Maru</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="page-center">
+  <header class="topbar"><div class="wrap"><a class="brand" href="/">Soy Maru<small>Catálogos Premium</small></a></div></header>
+
+  <main>
+    <div class="wrap narrow">
+      <div class="card center">
+        <span class="eyebrow">Portal de miembros</span>
+        <h2>Entrá a tu portal</h2>
+
+        <div id="loading" class="msg info"><span class="spinner" style="vertical-align:middle;margin-right:8px"></span> Verificando tu acceso…</div>
+
+        <div id="login" class="hidden">
+          <p class="lead" style="font-size:1rem">Usá la cuenta de Google con la que hiciste tu compra.</p>
+          <button id="google" class="btn btn-primary btn-block" type="button">Entrar con Google</button>
+          <p style="font-size:.9rem;margin:18px 0 0">¿Todavía no compraste? <a href="/#niveles">Elegí tu catálogo</a></p>
+        </div>
+
+        <div id="denied" class="hidden">
+          <div class="msg error" id="denied-text" style="text-align:left"></div>
+          <a class="btn btn-primary btn-block" href="/checkout.html">Hacer mi compra (DEMO)</a>
+          <button id="logout" class="btn btn-ghost btn-block" type="button" style="margin-top:12px">Probar con otra cuenta de Google</button>
+        </div>
+
+        <div id="error" class="msg error hidden" style="text-align:left"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/auth.js"></script>
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+      function only(id) { ['loading', 'login', 'denied'].forEach(function (x) { $(x).classList.toggle('hidden', x !== id); }); }
+      function fail(text) { $('error').textContent = text; $('error').classList.remove('hidden'); }
+
+      $('google').addEventListener('click', function () {
+        $('google').disabled = true;
+        $('google').textContent = 'Abriendo Google…';
+        window.MaruAuth.loginWithGoogle().catch(function () {
+          $('google').disabled = false; $('google').textContent = 'Entrar con Google';
+          fail('No pudimos abrir Google. Probá de nuevo.');
+        });
+      });
+      $('logout').addEventListener('click', async function () {
+        try { await window.MaruAuth.logout(); } catch (_) {}
+        $('error').classList.add('hidden');
+        only('login');
+      });
+
+      (async function init() {
+        try {
+          // Obligatorio: procesa el regreso de Google.
+          await window.MaruAuth.handleCallback();
+          var user = await window.MaruAuth.currentUser();
+          if (!user) return only('login');
+
+          // La decisión real la toma Netlify; esto solo elige qué mensaje mostrar.
+          if (window.MaruAuth.hasRole(user, 'buyer')) {
+            location.replace('/portal');
+            return;
+          }
+          var hint = null;
+          try { hint = sessionStorage.getItem('maru_email_hint'); } catch (_) {}
+          var mail = (user.email || '').toLowerCase();
+          var text = 'Entraste con ' + user.email + ', pero no encontramos una compra para esa cuenta.';
+          if (hint && hint !== mail) text += ' Tu compra la registraste con ' + hint + ': probá entrar con esa cuenta de Google.';
+          else text += ' Si recién compraste, cerrá sesión y volvé a entrar en unos segundos.';
+          $('denied-text').textContent = text;
+          only('denied');
+        } catch (e) {
+          only('login');
+          fail('No pudimos verificar tu sesión. Probá entrar de nuevo.');
+        }
+      })();
+    })();
+  </script>
+</body>
+</html>
